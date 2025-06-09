@@ -39,7 +39,7 @@ public class ArticleController {
         //2. 리파지터리 엔티티로 DB에 저장
         Article saved  = articleRepository.save(article);
         log.info("New article : {}", saved);
-        return null;
+        return "redirect:/articles/" + saved.getId();
     }
 
     @GetMapping("/articles/{id}")
