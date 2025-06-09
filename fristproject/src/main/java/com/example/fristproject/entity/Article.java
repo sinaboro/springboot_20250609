@@ -18,7 +18,7 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.AUTO)  //자동생성 기능 추가(숫자가 자동증가)
     private Long id;  //기본키
 
-    @Column
+    @Column(nullable = false)
     private String title;
 
     private String content;

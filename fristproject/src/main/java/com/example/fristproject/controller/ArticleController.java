@@ -7,8 +7,13 @@ import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -35,5 +40,37 @@ public class ArticleController {
         Article saved  = articleRepository.save(article);
         log.info("New article : {}", saved);
         return null;
+    }
+
+    @GetMapping("/articles/{id}")
+    public String show(@PathVariable("id") Long id, Model model) {
+        log.info("Show article");
+
+        //1. {id}값을 DB에서 꺼내오기
+        Article articleEntity = articleRepository.findById(id).orElse(null);
+
+        log.info("articleEntity : {}", articleEntity);
+
+        //2. Entity -> Dto 변환
+        // 생략
+
+        //3. view 전달
+        model.addAttribute("article", articleEntity);
+        return "articles/show";
+    }
+
+    @GetMapping("/articles")
+    public String index(Model model) {
+
+        //1. 모든 데이타 가져오기
+        List<Article> articleEntityList = articleRepository.findAll();
+
+        articleEntityList.forEach(list -> {log.info("list : {}", list);});
+
+        //2. 모델에 데이터 등록하기
+        model.addAttribute("articleList", articleEntityList);
+
+        //3. 뷰 페이지 설정하기
+        return "articles/index";
     }
 }
