@@ -77,10 +77,26 @@ public class ArticleController {
     }
 
     //articles/{{article.id}}/edit
-    //update get  요청
+    //localhost:8080/articles/2/edit  -> 이렇게 요청하면 edit()메소드가 응답
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable("id")Long id){
-
+    public String edit(@PathVariable("id")Long id, Model model) {
+        
+        //1. 수정할 데이타 가져오기
+        Article articleEntity = articleRepository.findById(id).orElse(null);
+        
+        //2. 모델에 데이터 등록하기
+        model.addAttribute("article", articleEntity);
+        
+        //3. 뷰 페이지 설정하기
         return "articles/edit";
     }
+
+    @PostMapping("/update")
+    public String updateArticle(ArticleForm form) {
+
+        log.info("Update article : {}",form);
+
+        return null;
+    }
+
 }
