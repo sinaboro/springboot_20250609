@@ -33,8 +33,12 @@ public class ArticleService {
 
     // create - insert sql 실행
     public Article create(ArticleForm dto) {
+
         Article article = dto.toEntity();
 
+        if(article.getId() != null) {
+            return null;
+        }
         return articleRepository.save(article);
     }
 
