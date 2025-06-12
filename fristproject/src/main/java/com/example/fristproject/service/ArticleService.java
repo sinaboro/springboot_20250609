@@ -3,11 +3,14 @@ package com.example.fristproject.service;
 import com.example.fristproject.dto.ArticleForm;
 import com.example.fristproject.entity.Article;
 import com.example.fristproject.repository.ArticleRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,6 +83,10 @@ public class ArticleService {
         return target;
     }
 
+    //@PersistenceContext
+    private final EntityManager entityManager;
+
+    @Transactional
     public List<Article> createArticles(List<ArticleForm> dtos) {
 
         //0.  toEntity(List<Article> articles) 변환
@@ -91,9 +98,12 @@ public class ArticleService {
                 .collect(Collectors.toList());
 
         //2. 엔티티 묶음을 DB에 저장하기
-        articleList.stream().forEach(article ->
-                        articleRepository.save(article));
+        articleList.stream().forEach(article -> {
+                    articleRepository.save(article);
+                }
+        );
 
+        entityManager.flush();
 //        for(Article article : articleList) {
 //            articleRepository.save(article);
 //        }
