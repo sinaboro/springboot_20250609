@@ -6,6 +6,7 @@ import com.example.fristproject.entity.Comment;
 import com.example.fristproject.repository.ArticleRepository;
 import com.example.fristproject.repository.CommnetRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CommentService {
 
     private final CommnetRepository commnetRepository;
@@ -77,6 +79,21 @@ public class CommentService {
 
         //4. 댓글 엔티티를 DTO로 변환 및 반환
         return CommentDto.createCommentDto(updated);
+    }
+
+    public CommentDto delete(Long id) {
+
+        //1. 댓글 조회 및 예외 발생
+         Comment target = commnetRepository.findById(id)
+                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
+
+         String aLong = target.getArticle().getTitle();
+         log.info("aLong >>>>>>>>>>>>>>>= {}", aLong);
+         //2. 댓글 삭제
+         commnetRepository.delete(target);
+
+        //3. 삭제 댓글을 DTO로 변환 및 반환
+        return CommentDto.createCommentDto(target);
     }
 }
 

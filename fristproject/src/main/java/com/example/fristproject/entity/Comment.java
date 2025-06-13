@@ -21,9 +21,10 @@ public class Comment {
 
     private String nickname;
 
+
     private String body;
 
-    @ManyToOne //(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;  //  article_id bigint
 
