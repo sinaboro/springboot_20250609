@@ -26,11 +26,26 @@ public class CommentService {
 
         //2. 엔티티 -> DTO 변환
         List<CommentDto> dtos = new ArrayList<>();
-        for (CommentDto comment : dtos) {
-
+        for (Comment comment : comments) {
+            CommentDto dto =
+                    CommentDto.createCommentDto(comment);
+            dtos.add(dto);
         }
-        //3. 결과 반환
 
-        return null;
+        //3. 결과 반환
+        return dtos;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

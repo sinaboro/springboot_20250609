@@ -1,14 +1,13 @@
 package com.example.fristproject.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.example.fristproject.entity.Comment;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @ToString
+@Builder
 public class CommentDto {
 
     private Long id; //댓글 id
@@ -16,4 +15,13 @@ public class CommentDto {
 
     private String nickname;
     private String body;
+
+    public static CommentDto createCommentDto(Comment comment) {
+        return  CommentDto.builder()
+                .id(comment.getId())
+                .articleId(comment.getArticle().getId())
+                .nickname(comment.getNickname())
+                .body(comment.getBody())
+                .build();
+    }
 }
