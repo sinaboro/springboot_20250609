@@ -7,9 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +29,17 @@ public class CommentApiController {
     }
 
     //2. 댓글 생성
+    @PostMapping("/api/articles/{articleId}/comments")
+    public ResponseEntity<CommentDto> create(@PathVariable Long articleId,
+                                             @RequestBody CommentDto dto) {
+
+        //1. 서비스 위임
+        CommentDto createdDto = commentService.create(articleId, dto);
+        //2. 결과 응답
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdDto);
+    }
+
+
     
     //3. 댓글 수정
     
